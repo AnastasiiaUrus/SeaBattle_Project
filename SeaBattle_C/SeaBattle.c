@@ -26,7 +26,6 @@ void PrintField(Matrix* m) {
     }
 }
 
-// Нова логіка обробки залпу
 void ProcessVolley(Matrix* m, int n, Point shots[]) {
     int hits = 0;
     int misses = 0;
@@ -37,13 +36,20 @@ void ProcessVolley(Matrix* m, int n, Point shots[]) {
 
         if (x >= 0 && x < m->N && y >= 0 && y < m->N) {
             if (m->grid[x][y].hasShip == 1) {
-                m->grid[x][y].isHit = 2;
+                m->grid[x][y].isHit = 2; // Влучили
                 hits++;
             } else {
-                m->grid[x][y].isHit = 1;
+                m->grid[x][y].isHit = 1; // Мимо
                 misses++;
             }
         }
     }
-    printf("Результат залпу: %d влучань, %d промахів.\n", hits, misses);
+    printf("Результат: %d влучань, %d промахів.\n", hits, misses);
+}
+
+Point GetUserShot() {
+    Point p;
+    printf("Введіть координати пострілу (рядок стовпчик: 0 0): ");
+    scanf("%d %d", &p.x, &p.y);
+    return p;
 }

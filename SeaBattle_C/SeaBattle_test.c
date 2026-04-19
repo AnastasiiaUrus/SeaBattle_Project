@@ -4,14 +4,20 @@ int main() {
     Matrix myField;
     InitField(&myField, FIELD_SIZE);
     
-    // Поставимо для тесту корабель вручну в позицію 0,0
     myField.grid[0][0].hasShip = 1; 
 
-    //стріляємо по (0,0), (0,1) та (5,5)
-    Point myVolley[3] = {{0, 0}, {0, 1}, {5, 5}};
+    printf("Початок гри\n");
+    while (myField.grid[0][0].isHit != 2) {
+        PrintField(&myField);
+        Point shot = GetUserShot();
+        
+        ProcessVolley(&myField, 1, &shot);
+        
+        if (myField.grid[0][0].isHit == 2) {
+            printf("\nКорабель потоплено\n");
+        }
+    }
     
-    ProcessVolley(&myField, 3, myVolley);
     PrintField(&myField);
-    
     return 0;
 }

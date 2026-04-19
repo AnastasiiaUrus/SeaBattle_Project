@@ -32,5 +32,5 @@ typedef struct {
 void InitField(Matrix* m, unsigned int size);
 void PrintField(Matrix* m);
 void ProcessVolley(Matrix* m, int n, Point shots[]);
-
+Point GetUserShot();
 #endif
