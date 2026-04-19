@@ -2,12 +2,15 @@
 
 int main() {
     Matrix myField;
-    
-    // 1. Тест ініціалізацію
     InitField(&myField, FIELD_SIZE);
     
-    // 2. Тест вивід порожнього поля
-    printf("Welcome to Sea Battle");
+    // Поставимо для тесту корабель вручну в позицію 0,0
+    myField.grid[0][0].hasShip = 1; 
+
+    //стріляємо по (0,0), (0,1) та (5,5)
+    Point myVolley[3] = {{0, 0}, {0, 1}, {5, 5}};
+    
+    ProcessVolley(&myField, 3, myVolley);
     PrintField(&myField);
     
     return 0;

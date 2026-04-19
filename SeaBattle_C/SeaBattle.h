@@ -12,20 +12,25 @@
 
 #define FIELD_SIZE 10
 
-// Клітинка поля
 typedef struct {
     int hasShip; // 0 - порожньо, 1 - корабель
     int isHit;   // 0 - не стріляли, 1 - мимо, 2 - влучили
 } Cell;
 
-// Поле бою (Matrix за методичкою) [cite: 43-48]
 typedef struct {
     Cell grid[FIELD_SIZE][FIELD_SIZE];
-    unsigned int N; // Розмір поля [cite: 47]
+    unsigned int N;
 } Matrix;
+
+// Нова структура для координат пострілу
+typedef struct {
+    int x;
+    int y;
+} Point;
 
 // Прототипи функцій
 void InitField(Matrix* m, unsigned int size);
 void PrintField(Matrix* m);
+void ProcessVolley(Matrix* m, int n, Point shots[]);
 
 #endif
