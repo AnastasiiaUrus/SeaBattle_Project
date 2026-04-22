@@ -1,5 +1,6 @@
 #include "SeaBattle.h"
-
+#include <stdlib.h> 
+#include <time.h> 
 void InitField(Matrix* m, unsigned int size) {
     m->N = size;
     for (int i = 0; i < size; i++) {
@@ -51,5 +52,30 @@ Point GetUserShot() {
     Point p;
     printf("Введіть координати пострілу (рядок стовпчик: 0 0): ");
     scanf("%d %d", &p.x, &p.y);
+    return p;
+}
+
+int LoadFieldFromFile(Matrix* m, const char* filename) {
+    FILE* f = fopen(filename, "r");
+    if (!f) return 0;
+
+    for (int i = 0; i < m->N; i++) {
+        for (int j = 0; j < m->N; j++) {
+            fscanf(f, "%d", &m->grid[i][j].hasShip);
+            m->grid[i][j].isHit = 0;
+        }
+    }
+    fclose(f);
+    return 1; 
+}
+
+// Функція випадковий постріл
+Point GetComputerShot(Matrix* m) {
+    Point p;
+    do {
+        p.x = rand() % m->N;
+        p.y = rand() % m->N;
+    } while (m->grid[p.x][p.y].isHit != 0); 
+    
     return p;
 }

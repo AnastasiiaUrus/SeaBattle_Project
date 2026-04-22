@@ -1,9 +1,3 @@
-/* Задача: 18. SeaBattle-1
- * Група: Статистика 1
- * Прізвище: Урус Анастасія, Гетало Софія
- */
-
-
 #ifndef SEABATTLE_H
 #define SEABATTLE_H
 
@@ -22,15 +16,16 @@ typedef struct {
     unsigned int N;
 } Matrix;
 
-// Нова структура для координат пострілу
 typedef struct {
     int x;
     int y;
 } Point;
 
-// Прототипи функцій
 void InitField(Matrix* m, unsigned int size);
 void PrintField(Matrix* m);
 void ProcessVolley(Matrix* m, int n, Point shots[]);
 Point GetUserShot();
+
+int LoadFieldFromFile(Matrix* m, const char* filename);
+Point GetComputerShot(Matrix* m);
 #endif
