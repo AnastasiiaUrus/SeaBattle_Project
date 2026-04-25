@@ -7,8 +7,8 @@
 #define FIELD_SIZE 10
 
 typedef struct {
-    int hasShip; // 0 - порожньо, 1 - корабель
-    int isHit;   // 0 - не стріляли, 1 - мимо, 2 - влучили
+    int hasShip;
+    int isHit;
 } Cell;
 
 typedef struct {
@@ -25,7 +25,9 @@ void InitField(Matrix* m, unsigned int size);
 void PrintField(Matrix* m);
 void ProcessVolley(Matrix* m, int n, Point shots[]);
 Point GetUserShot();
-
 int LoadFieldFromFile(Matrix* m, const char* filename);
 Point GetComputerShot(Matrix* m);
+int CheckWinCondition(Matrix* m);
+void PlaceShip(Matrix* m, int x, int y);
+
 #endif

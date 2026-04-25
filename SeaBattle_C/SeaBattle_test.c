@@ -27,5 +27,13 @@ int main() {
     }
     
     PrintField(&myField);
+    // ... після InitField ...
+PlaceShip(&myField, 0, 0); 
+printf("Тест: Корабель поставлено в 0,0. Чи є перемога? (1 - так, 0 - ні): %d\n", CheckWinCondition(&myField));
+
+// Тепер зробимо постріл, щоб "вбити" його
+Point hitPoint = {0, 0};
+ProcessVolley(&myField, 1, &hitPoint);
+printf("Тест: Після пострілу перемога? (1 - так, 0 - ні): %d\n", CheckWinCondition(&myField));
     return 0;
 }
