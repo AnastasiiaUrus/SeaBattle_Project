@@ -1,6 +1,7 @@
 #include "SeaBattle.h"
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 
 void InitField(Matrix* m, unsigned int size) {
     m->N = size;
@@ -13,15 +14,23 @@ void InitField(Matrix* m, unsigned int size) {
 }
 
 void PrintField(Matrix* m) {
-    printf("\n   ");
-    for (int i = 0; i < m->N; i++) printf("%c ", 'A' + i);
+    printf("\n    "); 
+    for (int i = 0; i < m->N; i++) printf("%c ", 'A' + i); // Букви зверху (Y)
     printf("\n");
+
     for (int i = 0; i < m->N; i++) {
-        printf("%2d ", i + 1);
+        printf("%2d |", i + 1); // Цифри збоку (X)
         for (int j = 0; j < m->N; j++) {
-            if (m->grid[i][j].isHit == 0) printf(". ");
-            else if (m->grid[i][j].isHit == 1) printf("O ");
-            else printf("X ");
+            // ЛОГІКА ВІДОБРАЖЕННЯ:
+            if (m->grid[i][j].isHit == 0) {
+                printf(". "); 
+            } 
+            else if (m->grid[i][j].isHit == 1) {
+                printf("0 "); // ПРОМАХ (відображаємо ноликом)
+            } 
+            else if (m->grid[i][j].isHit == 2) {
+                printf("X "); // ВЛУЧАННЯ (відображаємо іксом)
+            }
         }
         printf("\n");
     }
@@ -88,4 +97,22 @@ void PlaceShip(Matrix* m, int x, int y) {
     if (x >= 0 && x < m->N && y >= 0 && y < m->N) {
         m->grid[x][y].hasShip = 1;
     }
+}
+Point ConvertInputToPoint(char* input) {
+    Point p = {-1, -1};
+    int len = strlen(input);
+    if (len < 2) return p;
+
+    // Цифра (X) — на початку (1-10)
+    char numPart[4] = {0};
+    strncpy(numPart, input, len - 1);
+    int num = atoi(numPart);
+    if (num >= 1 && num <= 10) p.x = num - 1;
+
+    // Буква (Y) — в кінці (A-J)
+    char letter = input[len - 1];
+    if (letter >= 'A' && letter <= 'J') p.y = letter - 'A';
+    else if (letter >= 'a' && letter <= 'j') p.y = letter - 'a';
+
+    return p;
 }

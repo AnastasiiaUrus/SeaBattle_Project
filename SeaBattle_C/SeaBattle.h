@@ -29,5 +29,6 @@ int LoadFieldFromFile(Matrix* m, const char* filename);
 Point GetComputerShot(Matrix* m);
 int CheckWinCondition(Matrix* m);
 void PlaceShip(Matrix* m, int x, int y);
+Point ConvertInputToPoint(char* input);
 
 #endif
