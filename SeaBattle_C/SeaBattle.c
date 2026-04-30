@@ -37,22 +37,19 @@ void PrintField(Matrix* m) {
 }
 
 void ProcessVolley(Matrix* m, int n, Point shots[]) {
-    int hits = 0;
-    int misses = 0;
     for (int i = 0; i < n; i++) {
         int x = shots[i].x;
         int y = shots[i].y;
         if (x >= 0 && x < m->N && y >= 0 && y < m->N) {
             if (m->grid[x][y].hasShip == 1) {
-                m->grid[x][y].isHit = 2;
-                hits++;
+                m->grid[x][y].isHit = 2; // Влучання (X)
+                printf("ВЛУЧАННЯ!\n");
             } else {
-                m->grid[x][y].isHit = 1;
-                misses++;
+                m->grid[x][y].isHit = 1; // Промах (*)[cite: 5]
+                printf("ПРОМАХ!\n");
             }
         }
     }
-    printf("Результат залпу: %d влучань, %d промахів.\n", hits, misses);
 }
 
 Point GetUserShot() {

@@ -8,17 +8,15 @@ int main() {
     Matrix playerField, enemyField;
     char input[10];
 
-    // Ініціалізація обох полів
+    // 1. Ініціалізація обох полів
     InitField(&playerField, FIELD_SIZE);
     InitField(&enemyField, FIELD_SIZE);
 
-    // ... ініціалізація полів ...
-    
     printf("============================================\n");
     printf("   НАЛАШТУВАННЯ ВАШОГО ФЛОТУ \n");
     printf("============================================\n");
     
-    // Показуємо пусте поле, щоб було легше обрати координати
+    // Показуємо пусте поле
     PrintField(&playerField);
     
     printf("Оберіть місце для вашого корабля (наприклад, 1A): ");
@@ -33,41 +31,54 @@ int main() {
         PlaceShip(&playerField, 0, 0);
     }
 
-    // Корабель ворога все ще ставимо випадково
+    // Корабель ворога ставимо випадково
     PlaceShip(&enemyField, rand() % 10, rand() % 10);
     
     printf("\nНатисніть Enter, щоб розпочати бій...");
-    getchar(); getchar(); // Очікування натискання
+    getchar(); getchar(); 
 
-
-    printf("============================================\n");
+    printf("\n============================================\n");
     printf("   ВІТАЄМО У ГРІ МОРСЬКИЙ БІЙ (SeaBattle-1) \n");
     printf("============================================\n");
-    printf("Формат вводу: ЦифраБуква (наприклад: 1A або 10J)\n\n");
 
+    // ОСНОВНИЙ ЦИКЛ ГРИ
     while (1) {
-        // --- ВАШ ХІД ---
-        printf("\n--- ПОЛЕ ВОРОГА (куди ви стріляєте) ---");
-        PrintField(&enemyField);
-        
-        printf("Ваш постріл: ");
-        if (scanf("%s", input) != 1) break;
+        Point userShot;
+        int validShot = 0; 
 
-        Point userShot = ConvertInputToPoint(input);
+        // Цикл перевірки вводу гравця
+        while (validShot == 0) {
+            printf("\n--- ПОЛЕ ВОРОГА ---");
+            PrintField(&enemyField);
+            
+            printf("Ваш постріл (напр. 1A): ");
+            if (scanf("%s", input) != 1) return 0;
 
-        if (userShot.x == -1 || userShot.y == -1) {
-            printf("(!) Помилка вводу. Використовуйте формат 1A - 10J.\n");
-            continue;
+            userShot = ConvertInputToPoint(input);
+
+            // Перевірка 1: Чи в межах поля
+            if (userShot.x == -1 || userShot.y == -1) {
+                printf("(!) Помилка! Вводьте координати від 1A до 10J.\n");
+                continue;
+            }
+
+            // ПЕРЕВІРКА НА ПОВТОРНИЙ ПОСТРІЛ
+            int currentStatus = enemyField.grid[userShot.x][userShot.y].isHit;
+            
+            if (currentStatus != 0) {
+                printf("(!) Ви вже стріляли в %s. Стан клітинки: %d\n", input, currentStatus);
+                printf("(!) Оберіть іншу координату.\n");
+            } else {
+                validShot = 1; 
+            }
         }
 
         // Обробка вашого пострілу
         ProcessVolley(&enemyField, 1, &userShot);
         
-        // Показуємо результат вашого пострілу відразу
-        printf("\nВи вистрілили в %s:", input);
-        PrintField(&enemyField);
-
         if (CheckWinCondition(&enemyField)) {
+            printf("\n--- РЕЗУЛЬТАТ ВАШОГО ПОСТРІЛУ ---");
+            PrintField(&enemyField);
             printf("\n============================================\n");
             printf("      ПЕРЕМОГА! Ворожий корабель потоплено! \n");
             printf("============================================\n");
