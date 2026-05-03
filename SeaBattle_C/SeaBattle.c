@@ -90,9 +90,15 @@ int CheckWinCondition(Matrix* m) {
     return 1;
 }
 
-void PlaceShip(Matrix* m, int x, int y) {
-    if (x >= 0 && x < m->N && y >= 0 && y < m->N) {
-        m->grid[x][y].hasShip = 1;
+void PlaceShipExtended(Matrix* m, int x, int y, int length, char direction) {
+    for (int i = 0; i < length; i++) {
+        int curX = x, curY = y;
+        if (direction == 'H' || direction == 'h') curY = y + i; // Горизонтально
+        else curX = x + i; // Вертикально[cite: 5]
+
+        if (curX >= 0 && curX < m->N && curY >= 0 && curY < m->N) {
+            m->grid[curX][curY].hasShip = 1; // Ставимо частину корабля
+        }
     }
 }
 Point ConvertInputToPoint(char* input) {
@@ -112,4 +118,23 @@ Point ConvertInputToPoint(char* input) {
     else if (letter >= 'a' && letter <= 'j') p.y = letter - 'a';
 
     return p;
+}
+
+int CanPlaceShip(Matrix* m, int x, int y, int length, char direction) {
+    for (int i = 0; i < length; i++) {
+        int curX = x, curY = y;
+        if (direction == 'H' || direction == 'h') curY = y + i;
+        else curX = x + i;
+
+        // Перевірка 1: Чи не виходимо за межі 10x10
+        if (curX < 0 || curX >= (int)m->N || curY < 0 || curY >= (int)m->N) {
+            return 0; // Не влазить!
+        }
+
+        // Перевірка 2: Чи там уже не стоїть інший корабель
+        if (m->grid[curX][curY].hasShip == 1) {
+            return 0; // Місце зайняте!
+        }
+    }
+    return 1; // Все добре, можна ставити
 }

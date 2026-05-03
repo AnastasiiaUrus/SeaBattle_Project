@@ -30,5 +30,7 @@ Point GetComputerShot(Matrix* m);
 int CheckWinCondition(Matrix* m);
 void PlaceShip(Matrix* m, int x, int y);
 Point ConvertInputToPoint(char* input);
+void PlaceShipExtended(Matrix* m, int x, int y, int length, char direction);
+int CanPlaceShip(Matrix* m, int x, int y, int length, char direction);
 
 #endif
